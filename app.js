@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 // Require the necessary discord.js classes
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 const ubi_basic_token = process.env.ubi_basic_token
 const token = process.env.token
 
@@ -15,7 +15,7 @@ client.once('ready', () => {
 
 client.login(token);
 
-channel = client.channels.fetch('1000799837983354881')
+channel = client.channels.fetch(process.env.channelId)
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
