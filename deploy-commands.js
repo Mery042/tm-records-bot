@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, Routes } = require('discord.js');
 const { REST } = require('@discordjs/rest');
-const { clientId, guildId, token } = require('./config.json');
+const clientId = process.env.clientId
+const guildId = process.env.guildId
+const token = process.env.token
 
 const commands = [
 	new SlashCommandBuilder().setName('records').setDescription('Replies with records of the map !')

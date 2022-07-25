@@ -1,10 +1,9 @@
 const axios = require('axios');
-const dotenv = require('dotenv')
-dotenv.config()
 
 // Require the necessary discord.js classes
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
-const { ubi_basic_token, token } = require('./config.json')
+const ubi_basic_token = process.env.ubi_basic_token
+const token = process.env.token
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
