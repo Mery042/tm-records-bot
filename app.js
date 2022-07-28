@@ -327,5 +327,7 @@ async function Run(){
       if(user.accountId == element.accountId) element.username = user.displayName
     })
   })
+
+  ComputeScoreDiff()
 }
 
