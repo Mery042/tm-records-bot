@@ -237,7 +237,7 @@ function ComputeScoreDiff(){
 
   leaderboard.forEach(element => {
     if(element.position != 1){
-      scoreDiff = topScore - element.score
+      scoreDiff = element.score - topScore
       element.scoreDiff = scoreDiff
     }
   })
@@ -257,7 +257,7 @@ function ToRaceTime(score){
   console.log(minutes)
   console.log(seconds)
   console.log(milliseconds)
-  
+
   var milisecondsFormatted = ''
   if(milliseconds != 0){
     var quotient = milliseconds / 10
