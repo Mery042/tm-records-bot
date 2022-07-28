@@ -46,9 +46,16 @@ client.on('interactionCreate', async interaction => {
     }
 
     leaderboard.forEach(element => {
-      embed.fields.push(
-        { name: `${element.position}.  ${element.username}`, value: ToRaceTime(element.score) }
-      )
+      if(element.position != 1){
+        embed.fields.push(
+          { name: `${element.position}.  ${element.username}`, value: `${ToRaceTime(element.score)}  Diff: +${ToRaceTime(element.scoreDiff)}` }
+        )
+      } else {
+        embed.fields.push(
+          { name: `${element.position}.  ${element.username}`, value: ToRaceTime(element.score) }
+        )
+      }
+      
     })
 
     await interaction.reply({ embeds: [ embed ] });
@@ -223,6 +230,18 @@ async function GetUsersInfo(accountIds){
     .then(result => users = Array.from(result.data)
     )
     .catch(error => console.log(error));
+}
+
+function ComputeScoreDiff(){
+  topScore = leaderboard[0].score
+
+  leaderboard.forEach(element => {
+    if(element.position != 1){
+      scoreDiff = topScore - element.score
+      element.scoreDiff = scoreDiff
+    }
+  })
+
 }
 
 //Convert milliseconds into a formatted string like a race time in Trackmania
