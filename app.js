@@ -48,11 +48,11 @@ client.on('interactionCreate', async interaction => {
     leaderboard.forEach(element => {
       if(element.position != 1){
         embed.fields.push(
-          { name: `${element.position}.  ${element.username}`, value: `${ToRaceTime(element.score)}  Diff: +${ToRaceTime(element.scoreDiff)}` }
+          { name: `${element.position}.  ${element.username}`, value: `${ToRaceTime(element.score)}    Diff: +${ToRaceTime(element.scoreDiff)}` }
         )
       } else {
         embed.fields.push(
-          { name: `${element.position}.  ${element.username}`, value: ToRaceTime(element.score) }
+          { name: `${element.position}.  ${element.username}  👑`, value: ToRaceTime(element.score) }
         )
       }
       
