@@ -15,7 +15,7 @@ client.once('ready', () => {
 
 client.login(token);
 
-channel = client.channels.fetch(process.env.channelId)
+channel = client.channels.cache.get(process.env.channelId)
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
@@ -61,7 +61,7 @@ client.on('interactionCreate', async interaction => {
       
     })
 
-    await channel.send({ embeds: [ embed ] });
+    await channel.send({ embeds: [ embed ] })
 	}
 });
 
