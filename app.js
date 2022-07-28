@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 // Require the necessary discord.js classes
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const ubi_basic_token = process.env.ubi_basic_token
 const token = process.env.token
 
