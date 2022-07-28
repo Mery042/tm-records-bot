@@ -15,7 +15,7 @@ client.once('ready', () => {
 
 client.login(token);
 
-channel = client.channels.cache.get(process.env.channelId)
+channel = client.channels.cache.find(ch => ch.id === process.env.channelId)
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
