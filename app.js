@@ -247,11 +247,16 @@ function ComputeScoreDiff(){
 //Convert milliseconds into a formatted string like a race time in Trackmania
 function ToRaceTime(score){
   var raceTime = ''
-
+  console.log(score)
   var milliseconds = parseInt((score % 1000)),
     seconds = Math.floor((score / 1000) % 60),
     minutes = Math.floor((score / (1000 * 60)) % 60),
     hours = Math.floor((score / (1000 * 60 * 60)) % 24);
+  
+  console.log(hours)
+  console.log(minutes)
+  console.log(seconds)
+  console.log(milliseconds)
   
   var milisecondsFormatted = ''
   if(milliseconds != 0){
@@ -291,19 +296,13 @@ function CleanMapName(mapName){
   while(i < mapName.length) {
     if(mapName.charAt(i) === '$'){
       if(mapName.charAt(i+1) === '$'){
-        console.log('dollar')
         cleanedMapName = cleanedMapName.slice(0, j) + cleanedMapName.slice(j+1)
-        console.log(cleanedMapName)
         i += 2;
       } else if(reg.test(mapName.charAt(i+1))){
-        console.log('hexa')
         cleanedMapName = cleanedMapName.slice(0, j) + cleanedMapName.slice(j+4)
-        console.log(cleanedMapName)
         i += 4;
       } else {
-        console.log('autre')
         cleanedMapName = cleanedMapName.slice(0, j) + cleanedMapName.slice(j+2)
-        console.log(cleanedMapName)
         i += 2;
       }
     } else {
