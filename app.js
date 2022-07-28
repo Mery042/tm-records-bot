@@ -39,9 +39,12 @@ client.on('interactionCreate', async interaction => {
       color: 0x0099FF,
       title: CleanMapName(mapName),
       fields: [],
-      timestamp: new Date(),
       thumbnail: {
         url: thumbnailUrl,
+      },
+      timestamp: new Date(),
+      footer: {
+        text: 'Powered by LoadingTM'
       }
     }
 
@@ -58,7 +61,7 @@ client.on('interactionCreate', async interaction => {
       
     })
 
-    await interaction.reply({ embeds: [ embed ] });
+    await channel.send({ embeds: [ embed ] });
 	}
 });
 
