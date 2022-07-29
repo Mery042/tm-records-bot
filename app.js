@@ -70,7 +70,9 @@ client.on('interactionCreate', async interaction => {
         interaction.reply({ content: 'Error: can\'t fetch the channel #tm-records, please contact Mery#8092 :grin:', ephemeral: true })
       })
     
-	}
+	} else if(commandName === 'help-records'){
+    interaction.reply({ content: 'Copy the UID of the map on trackmania.io and paste it in the parameter "map-uid" of the command : /records [map-uid]', ephemeral: true })
+  }
 });
 
 async function UbiTicket(){

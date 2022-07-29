@@ -9,7 +9,8 @@ const commands = [
 	.addStringOption(option =>
 		option.setName('map-uid')
 			.setDescription('The id of the map')
-			.setRequired(true))
+			.setRequired(true)),
+	new SlashCommandBuilder().setName('help-records').setDescription('How to use the TM Records Bot')
 ]
 	.map(command => command.toJSON());
 
