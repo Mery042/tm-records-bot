@@ -60,10 +60,16 @@ client.on('interactionCreate', async interaction => {
       
     })
 
-    await client.channels.fetch(process.env.channelId)
-    .then(channel => channel.send({ embeds: [ embed ] }))
-    .catch(error => console.log(error))
-    interaction.reply({ content: 'Check the response in #tm-records !', ephemeral: true })
+    client.channels.fetch(process.env.channelId)
+    .then(channel => {
+       channel.send({ embeds: [ embed ] })
+       interaction.reply({ content: 'Success ! Check the response in #tm-records', ephemeral: true })
+      })
+    .catch(error => {
+        console.log(error);
+        interaction.reply({ content: 'Error: can\'t fetch the channel #tm-records, please contact Mery#8092 :grin:', ephemeral: true })
+      })
+    
 	}
 });
 
