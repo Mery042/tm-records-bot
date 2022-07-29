@@ -2,7 +2,7 @@ const { SlashCommandBuilder, Routes } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const clientId = process.env.clientId
 const guildId = process.env.guildId
-const token = process.env.token
+const discordToken = process.env.token
 
 const commands = [
 	new SlashCommandBuilder().setName('records').setDescription('Replies with records of the map !')
@@ -13,7 +13,7 @@ const commands = [
 ]
 	.map(command => command.toJSON());
 
-const rest = new REST({ version: '10' }).setToken(token);
+const rest = new REST({ version: '10' }).setToken(discordToken);
 
 rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
 	.then(() => console.log('Successfully registered application commands.'))

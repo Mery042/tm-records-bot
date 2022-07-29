@@ -3,7 +3,7 @@ const axios = require('axios');
 // Require the necessary discord.js classes
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const ubi_basic_token = process.env.ubi_basic_token
-const token = process.env.token
+const discordToken = process.env.token
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Partials.Channel] });
@@ -13,7 +13,7 @@ client.once('ready', () => {
 	console.log('Ready!');
 });
 
-client.login(token);
+client.login(discordToken);
 
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
@@ -21,9 +21,9 @@ client.on('interactionCreate', async interaction => {
 	const {commandName, options } = interaction;
   
 	if (commandName === 'records') {
-    level0Token = ''
-    level1Token = ''
-    level2Token = ''
+    ubiTicket = ''
+    ubiServicesToken = ''
+    nadeoServicesToken = ''
     
     mapUid = options.getString('map-uid')
     mapName = ''
@@ -73,49 +73,41 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-async function L0Token(){
+async function UbiTicket(){
   var config = {
     method: 'post',
     url: 'https://public-ubiservices.ubi.com/v3/profiles/sessions',
     headers: { 
+      'User-Agent': 'TMRecordsBot/remi.boure05@gmail.com', 
       'Content-Type': 'application/json', 
       'Ubi-AppId': '86263886-327a-4328-ac69-527f0d20a237', 
-      'Ubi-RequestedPlatformType': 'uplay', 
       'Authorization': `Basic ${ubi_basic_token}`
     }
   };
   
   const result = await axios(config)
-  .then(result => level0Token = result.data.ticket)
+  .then(result => ubiTicket = result.data.ticket)
   .catch(error => console.log(error));
 }
 
-async function L1Token(){
+async function UbiServicesToken(){
     var config = {
         method: 'post',
         url: 'https://prod.trackmania.core.nadeo.online/v2/authentication/token/ubiservices',
         headers: { 
-          'User-Agent': 'ManiaPlanet/3.3.0 (Win64; rv: 2020-07-23_20_22; context: none; distro: UPLAY)', 
-          'Pragma': 'no-cache', 
-          'Cache-Control': 'no-cache, no-store, must-revalidate', 
-          'Accept-Encoding': 'gzip,deflate', 
-          'Accept-Language': 'en-US,en', 
-          'Nadeo-Game-Build': '2020-07-23_20_22', 
-          'Nadeo-Game-Distro': 'UPLAY', 
-          'Nadeo-Game-Lang': 'en-US', 
-          'Nadeo-Game-Name': 'ManiaPlanet', 
-          'Nadeo-Game-Version': '3.3.0', 
-          'Authorization': `ubi_v1 t=${level0Token}`
+          'User-Agent': 'TMRecordsBot/remi.boure05@gmail.com', 
+          'Content-Type': 'application/json',
+          'Authorization': `ubi_v1 t=${ubiTicket}`
         }
       };
     
       const result = await axios(config)
-      .then(result => level1Token = result.data.accessToken)
+      .then(result => ubiServicesToken = result.data.accessToken)
       .catch(error => console.log(error));
 }
 
 
-async function L2Token(){
+async function NadeoServicesToken(){
 var data = JSON.stringify({
     "audience": "NadeoLiveServices"
     })
@@ -124,31 +116,22 @@ var data = JSON.stringify({
     method: 'post',
     url: 'https://prod.trackmania.core.nadeo.online/v2/authentication/token/nadeoservices',
     headers: { 
-        'User-Agent': 'ManiaPlanet/3.3.0 (Win64; rv: 2020-07-23_20_22; context: none; distro: UPLAY)', 
-        'Pragma': 'no-cache', 
-        'Cache-Control': 'no-cache, no-store, must-revalidate', 
-        'Accept-Encoding': 'gzip,deflate', 
-        'Accept-Language': 'en-US,en', 
-        'Nadeo-Game-Build': '2020-07-23_20_22', 
-        'Nadeo-Game-Distro': 'UPLAY', 
-        'Nadeo-Game-Lang': 'en-US', 
-        'Nadeo-Game-Name': 'ManiaPlanet', 
-        'Nadeo-Game-Version': '3.3.0', 
-        'Authorization': `nadeo_v1 t=${level1Token}`, 
-        'Content-Type': 'application/json'
+        'User-Agent': 'TMRecordsBot/remi.boure05@gmail.com', 
+        'Content-Type': 'application/json',
+        'Authorization': `nadeo_v1 t=${ubiServicesToken}`
     },
     data: data
     }
 
     const result = await axios(config)
-    .then(result => level2Token = result.data.accessToken)
+    .then(result => nadeoServicesToken = result.data.accessToken)
     .catch(error => console.log(error));
 }
 
-async function GetTokens(){
-    await L0Token()
-    await L1Token()
-    await L2Token()
+async function Authenticate(){
+    await UbiTicket()
+    await UbiServicesToken()
+    await NadeoServicesToken()
     console.log('Authenticated !');
 }
 
@@ -158,19 +141,10 @@ async function GetNameOfMap(){
     method: 'get',
     url: `https://prod.trackmania.core.nadeo.online/maps?mapUidList=${mapUid}`,
     headers: { 
-      'User-Agent': 'ManiaPlanet/3.3.0 (Win64; rv: 2020-07-23_20_22; context: none; distro: UPLAY)', 
-      'Pragma': 'no-cache', 
-      'Cache-Control': 'no-cache, no-store, must-revalidate', 
-      'Accept-Encoding': 'gzip,deflate', 
-      'Accept-Language': 'en-US,en', 
-      'Nadeo-Game-Build': '2020-07-23_20_22', 
-      'Nadeo-Game-Distro': 'UPLAY', 
-      'Nadeo-Game-Lang': 'en-US', 
-      'Nadeo-Game-Name': 'ManiaPlanet', 
-      'Nadeo-Game-Version': '3.3.0', 
-      'Authorization': `nadeo_v1 t=${level1Token}`,
+      'User-Agent': 'TMRecordsBot/remi.boure05@gmail.com',
       'Content-Type': 'application/json', 
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Authorization': `nadeo_v1 t=${ubiServicesToken}`,
     }
   }
 
@@ -187,19 +161,10 @@ async function GetTopLeaderboardOfMap_Club(){
     method: 'get',
     url: `https://live-services.trackmania.nadeo.live/api/token/leaderboard/group/Personal_Best/map/${mapUid}/club/28071/top`,
     headers: { 
-      'User-Agent': 'ManiaPlanet/3.3.0 (Win64; rv: 2020-07-23_20_22; context: none; distro: UPLAY)', 
-      'Pragma': 'no-cache', 
-      'Cache-Control': 'no-cache, no-store, must-revalidate', 
-      'Accept-Encoding': 'gzip,deflate', 
-      'Accept-Language': 'en-US,en', 
-      'Nadeo-Game-Build': '2020-07-23_20_22', 
-      'Nadeo-Game-Distro': 'UPLAY', 
-      'Nadeo-Game-Lang': 'en-US', 
-      'Nadeo-Game-Name': 'ManiaPlanet', 
-      'Nadeo-Game-Version': '3.3.0', 
-      'Authorization': `nadeo_v1 t=${level2Token}`,
+      'User-Agent': 'TMRecordsBot/remi.boure05@gmail.com',
       'Content-Type': 'application/json', 
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Authorization': `nadeo_v1 t=${nadeoServicesToken}`
     }
   }
 
@@ -221,19 +186,10 @@ async function GetUsersInfo(accountIds){
     method: 'get',
     url: `https://prod.trackmania.core.nadeo.online/accounts/displayNames/?accountIdList=${accountIdList}`,
     headers: { 
-      'User-Agent': 'ManiaPlanet/3.3.0 (Win64; rv: 2020-07-23_20_22; context: none; distro: UPLAY)', 
-      'Pragma': 'no-cache', 
-      'Cache-Control': 'no-cache, no-store, must-revalidate', 
-      'Accept-Encoding': 'gzip,deflate', 
-      'Accept-Language': 'en-US,en', 
-      'Nadeo-Game-Build': '2020-07-23_20_22', 
-      'Nadeo-Game-Distro': 'UPLAY', 
-      'Nadeo-Game-Lang': 'en-US', 
-      'Nadeo-Game-Name': 'ManiaPlanet', 
-      'Nadeo-Game-Version': '3.3.0', 
-      'Authorization': `nadeo_v1 t=${level1Token}`,
+      'User-Agent': 'TMRecordsBot/remi.boure05@gmail.com', 
       'Content-Type': 'application/json', 
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Authorization': `nadeo_v1 t=${ubiServicesToken}`
     }
   }
 
@@ -326,7 +282,7 @@ function CleanMapName(mapName){
 }
 
 async function Run(){
-  await GetTokens()
+  await Authenticate()
   await GetNameOfMap()
   await GetTopLeaderboardOfMap_Club()
   await GetUsersInfo(accountIds)
