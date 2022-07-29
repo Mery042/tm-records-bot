@@ -18,7 +18,7 @@ client.login(token);
 console.log(client.channels.cache)
 console.log(process.env.channelId)
 console.log(typeof(process.env.channelId))
-channel = client.channels.cache.get(process.env.channelId)
+channel = client.channels.fetch(process.env.channelId)
 console.log(channel)
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
