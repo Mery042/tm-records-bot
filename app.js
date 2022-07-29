@@ -63,6 +63,7 @@ client.on('interactionCreate', async interaction => {
     await client.channels.fetch(process.env.channelId)
     .then(channel => channel.send({ embeds: [ embed ] }))
     .catch(error => console.log(error))
+    interaction.reply({ content: 'Check the response in #tm-records !', ephemeral: true })
 	}
 });
 
